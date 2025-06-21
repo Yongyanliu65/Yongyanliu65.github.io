@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Yongyan Liu | GitHub Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal website and portfolio of Yongyan Liu.">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #24292f;
+      --secondary: #0366d6;
+      --background: #f6f8fa;
+      --card-bg: #fff;
+      --border: #e1e4e8;
+    }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: var(--background);
+      color: var(--primary);
+    }
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 2rem 0 1rem 0;
+      text-align: center;
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid var(--secondary);
+      object-fit: cover;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin: 0 0 0.25em 0;
+      font-size: 2.5rem;
+    }
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.5em;
+      color: var(--secondary);
+    }
+    .bio {
+      max-width: 600px;
+      margin: 1rem auto 2rem auto;
+      font-size: 1.1em;
+      line-height: 1.7;
+    }
+    .github-link {
+      background: var(--secondary);
+      color: #fff;
+      padding: 0.5em 1.5em;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1em;
+      transition: background 0.2s;
+    }
+    .github-link:hover {
+      background: #0356b6;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(36,41,47,0.04);
+      padding: 2rem 2rem 1.5rem 2rem;
+      border: 1px solid var(--border);
+    }
+    .repo-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .repo {
+      border-bottom: 1px solid var(--border);
+      padding: 1em 0;
+    }
+    .repo:last-child {
+      border-bottom: none;
+    }
+    .repo a {
+      color: var(--secondary);
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1em;
+    }
+    .repo p {
+      margin: 0.25em 0 0 0;
+      color: #444;
+    }
+    .stats {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat strong {
+      font-size: 1.5em;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      main { padding: 1em; }
+      .stats { flex-direction: column; gap: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://github.com/Yongyanliu65.png" alt="Avatar" class="avatar">
+    <h1>Yongyan Liu</h1>
+    <div class="bio">
+      Hi! I’m Yongyan Liu, a passionate developer and open-source enthusiast.  
+      Welcome to my GitHub portfolio website! Here you’ll find my public projects, GitHub stats, and ways to connect.
+    </div>
+    <a class="github-link" href="https://github.com/Yongyanliu65" target="_blank">View My GitHub</a>
+    <div class="stats" id="github-stats">
+      <!-- Stats will be loaded here -->
+    </div>
+  </header>
+  <main>
+    <h2>My Public GitHub Repositories</h2>
+    <ul class="repo-list" id="repo-list">
+      <!-- Repositories will be loaded here -->
+    </ul>
+  </main>
+  <footer style="text-align:center;padding:2em 0;color:#888;font-size:0.95em;">
+    &copy; 2025 Yongyan Liu. Built with ❤️ and GitHub Pages.
+  </footer>
+  <script>
+    const username = "Yongyanliu65";
+    // Fetch GitHub stats
+    fetch(`https://api.github.com/users/${username}`)
+      .then(res => res.json())
+      .then(user => {
+        document.getElementById('github-stats').innerHTML = `
+          <div class="stat"><strong>${user.public_repos}</strong>Repos</div>
+          <div class="stat"><strong>${user.followers}</strong>Followers</div>
+          <div class="stat"><strong>${user.following}</strong>Following</div>
+        `;
+      });
+
+    // Fetch repositories
+    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
+      .then(res => res.json())
+      .then(repos => {
+        const list = document.getElementById('repo-list');
+        repos.forEach(repo => {
+          const li = document.createElement('li');
+          li.className = "repo";
+          li.innerHTML = `
+            <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+            <p>${repo.description || ''}</p>
+          `;
+          list.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
